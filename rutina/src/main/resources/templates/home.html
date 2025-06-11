@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio - Rutinas</title>
+  <link rel="stylesheet" href="/css/home.css">
+  <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+</head>
+<body>
+  <div class="container">
+    <h1>Bienvenido a tu Panel de Rutinas</h1>
+
+
+<div class="daily-routine">
+  <h3>
+    Rutina de hoy (
+    <span th:text="${rutinaHoy != null} ? ${rutinaHoy.diaSemana} : 'Sin rutina'"></span>
+    )
+  </h3>
+
+  <div th:if="${rutinaHoy != null}">
+    <ul>
+      <li th:each="ejercicio : ${rutinaHoy.ejercicios}">
+        <strong th:text="${ejercicio.nombreEjercicio}"></strong> -
+        <span th:text="'Series: ' + ${ejercicio.series} + ', Reps: ' + ${ejercicio.repeticiones} + ', Peso: ' + ${ejercicio.pesoUsado} + 'kg'"></span>
+      </li>
+    </ul>
+  </div>
+
+  <div th:if="${rutinaHoy == null}">
+    <p>No tenés una rutina asignada para hoy.</p>
+  </div>
+</div>
+
+
+
+
+
+    <div class="actions">
+      <button onclick="window.location.href='/crear-rutina'">Crear rutina</button>
+    <select id="selectRoutine" style="padding: 10px; font-size: 16px; border-radius: 8px;">
+        <option value="">Selecciona una rutina</option>
+        <option value="1">Rutina 1: Lunes - Piernas</option>
+        <option value="2">Rutina 2: Miércoles - Pecho</option>
+        <option value="3">Rutina 3: Viernes - Espalda</option>
+    </select>
+    <button onclick="modificarRutina()" id="modificarBtn" disabled>Modificar rutina</button>
+    <script>
+        const selectRoutine = document.getElementById('selectRoutine');
+        const modificarBtn = document.getElementById('modificarBtn');
+        selectRoutine.addEventListener('change', function() {
+            modificarBtn.disabled = !this.value;
+        });
+        function modificarRutina() {
+            const rutinaId = selectRoutine.value;
+            if (rutinaId) {
+                window.location.href = '/modificar-rutina?id=' + rutinaId;
+            }
+        }
+    </script>
+    </div>
+
+
+    <div class="user-routines">
+      <h3>Todas tus rutinas</h3>
+      <div class="routine-item">Rutina 1: Lunes - Piernas</div>
+      <div class="routine-item">Rutina 2: Miércoles - Pecho</div>
+      <div class="routine-item">Rutina 3: Viernes - Espalda</div>
+
+    </div>
+  </div>
+
+  <script>
+    const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+    const hoy = new Date();
+    const nombreDia = dias[hoy.getDay()];
+    document.getElementById("dayName").textContent = nombreDia;
+  </script>
+</body>
+</html>
