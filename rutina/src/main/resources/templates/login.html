@@ -13,6 +13,11 @@
     <button type="submit">Entrar</button>
     <button type="button" onclick="window.location.href='/auth/register'">Registrate</button>
   </form>
+ <div th:if="${error}">
+  <script th:inline="javascript">
+    alert([[${error}]]);
+  </script>
+</div>
 
 </body>
 </html>

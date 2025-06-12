@@ -112,26 +112,28 @@ public class AuthController {
             }
         }
 
-    @PostMapping("/login")
-    public String loginUser(HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
-        String usernameOrEmail = request.getParameter("username");
-        if (usernameOrEmail == null || usernameOrEmail.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Debes ingresar tu nombre de usuario o correo.");
-            return "redirect:/auth/login";
-        }
+            @PostMapping("/login")
+            public String loginUser(HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
+                String usernameOrEmail = request.getParameter("username");
+                if (usernameOrEmail == null || usernameOrEmail.isEmpty()) {
+                    redirectAttributes.addFlashAttribute("error", "Debes ingresar tu nombre de usuario o correo.");
+                    return "redirect:/auth/login";
+                }
 
-        Optional<UsuarioModel> usuario = Optional.of(usuarioRepository.findByNombre(usernameOrEmail));
-        if (usuario == null) {
-            usuario = usuarioRepository.findByEmail(usernameOrEmail);
-        }
+                Optional<UsuarioModel> usuario = usuarioRepository.findByNombreIgnoreCase(usernameOrEmail);
 
-        if (usuario.isPresent() && usuario.get().isVerificado()) {
-            session.setAttribute("usuario", usuario.get());
-            return "redirect:/home";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "Usuario no encontrado o no verificado.");
-            return "redirect:/auth/login";
-        }
-    }
+                if (usuario.isEmpty()) {
+                    usuario = usuarioRepository.findByEmail(usernameOrEmail);
+                }
+
+                if (usuario.isPresent() && usuario.get().isVerificado()) {
+                    session.setAttribute("usuario", usuario.get());
+                    return "redirect:/home";
+                } else {
+                    redirectAttributes.addFlashAttribute("error", "Usuario no encontrado o no verificado.");
+                    return "redirect:/auth/login";
+                }
+            }
+
 
 }

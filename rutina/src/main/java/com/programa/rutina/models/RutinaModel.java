@@ -5,6 +5,7 @@
 
 package com.programa.rutina.models;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,13 +42,18 @@ public class RutinaModel {
     @Column(nullable = false)
     private  String nombre;
     @Column(nullable = true)
-    private Date duracion;
+        private LocalDate fechaInicio;
+        private LocalDate fechaFin;
+        private boolean activa;
+
     @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<DiaModel> dias = new ArrayList<>();
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioModel usuario;
+
+
 
 
 

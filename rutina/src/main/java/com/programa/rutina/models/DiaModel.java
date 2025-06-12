@@ -47,6 +47,7 @@ public class DiaModel {
     private String grupoMuscular;
     @Enumerated(EnumType.STRING)
     private DiaSemana diaSemana;
+    private String duracion;
 
     @ManyToOne
     @JoinColumn(name = "rutina_id")

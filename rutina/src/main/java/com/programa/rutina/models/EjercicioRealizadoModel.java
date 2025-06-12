@@ -35,9 +35,9 @@ public class EjercicioRealizadoModel {
     @Column(nullable = false)
     private int series;
         @Column(nullable = false)
-    private int repeticiones;
-        @Column(nullable = false)
-    private double pesoUsado;
+    private String repeticiones;
+        @Column(nullable = true)
+    private String pesoUsado;
 
     private int repeticionesRecamara;
     private String comentario;
@@ -45,4 +45,8 @@ public class EjercicioRealizadoModel {
     @ManyToOne
     @JoinColumn(name = "dia_id")
     private DiaModel dia;
+     @ManyToOne
+    @JoinColumn(name = "rutina_id")
+    private RutinaModel rutina;
+
 }

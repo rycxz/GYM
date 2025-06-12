@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Rutina</title>
+    <link rel="stylesheet" href="/css/crear.css">
+</head>
+<body>
+    <form id="formGuardarRutina" action="/crear-rutina" method="post">
+        <div class="container">
+            <h1>Crea una nueva rutina</h1>
+
+            <div class="formulario-rutina">
+                <label for="nombre">*Nombre de la rutina:</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Nombre de la rutina" required>
+
+                <label for="fechaInicio">¿Cuánto tiempo la quieres seguir?</label>
+                <div class="fechas">
+                    <input type="date" id="fechaInicio" name="fechaInicio" required>
+                    <span>hasta</span>
+                    <input type="date" id="fechaFin" name="fechaFin" required>
+                </div>
+            </div>
+
+            <hr>
+            <h2>Plan semanal</h2>
+            <div id="semana"></div>
+
+            <button type="submit" class="guardar-btn">Guardar rutina</button>
+        </div>
+    </form>
+
+    <script>
+        const diasSemana = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+        const contenedorSemana = document.getElementById("semana");
+
+        diasSemana.forEach((dia, index) => {
+            const seccionDia = document.createElement("div");
+            seccionDia.className = "dia";
+            seccionDia.dataset.index = index;
+            seccionDia.innerHTML = `
+                <h3>${dia}</h3>
+                <!-- Campo oculto para guardar el nombre del día (importantísimo para la BBDD) -->
+            <!-- Campo oculto para diaSemana -->
+                <input type="hidden" name="dias[${index}].diaSemana" value="${dia.toUpperCase()}">
+
+
+                <label>*Grupo muscular:</label>
+                <input type="text" name="dias[${index}].grupoMuscular" placeholder="Ej: Espalda, Piernas..." required>
+
+                <div class="ejercicios-container" id="ejercicios-${index}"></div>
+                <button type="button" onclick="agregarEjercicio(${index})">Agregar ejercicio</button>
+            `;
+            contenedorSemana.appendChild(seccionDia);
+        });
+
+
+        function agregarEjercicio(diaIndex) {
+            const container = document.getElementById(`ejercicios-${diaIndex}`);
+            const ejercicioIndex = container.children.length;
+            const div = document.createElement("div");
+            div.className = "ejercicio";
+            div.innerHTML = `
+                <label>*Nombre del ejercicio:</label>
+          <input type="text" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].nombreEjercicio" required>
+
+
+
+                <label>*Series:</label>
+                <input type="number" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].series" min="1" required>
+
+                <label>*Repeticiones:</label>
+                <input type="text" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].repeticiones" min="1" required>
+
+                <label>Comentario:</label>
+                <textarea name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].comentario" rows="2" placeholder="Opcional..."></textarea>
+            `;
+            container.appendChild(div);
+        }
+    </script>
+</body>
+</html>
