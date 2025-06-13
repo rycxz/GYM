@@ -56,5 +56,14 @@ public class DiaModel {
     @OneToMany(mappedBy = "dia", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<EjercicioRealizadoModel> ejercicios = new ArrayList<>();
+    @Override
+public String toString() {
+    return "DiaModel{" +
+            "id=" + id +
+            ", diaSemana=" + diaSemana +
+
+            '}';
+}
+
 }
 

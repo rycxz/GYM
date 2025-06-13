@@ -14,7 +14,7 @@
 
 <div class="daily-routine">
   <h3>
-    Rutina de hoy (
+    Entrenamiento de hoy (
     <span th:text="${rutinaHoy != null} ? ${rutinaHoy.diaSemana} : 'Sin rutina'"></span>
     )
   </h3>
@@ -31,12 +31,12 @@
   <div th:if="${rutinaHoy == null}">
     <p>No tenés una rutina asignada para hoy.</p>
   </div>
+  <div style="margin-top: 20px;"></div>
+    <button onclick="window.location.href='/inciar-rutina'" style="padding: 12px 24px; font-size: 16px; border-radius: 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+      Iniciar entrenamiento
+    </button>
+  </div>
 </div>
-
-
-
-
-
     <div class="actions">
       <button onclick="window.location.href='/crear-rutina'">Crear rutina</button>
     <select id="selectRoutine" style="padding: 10px; font-size: 16px; border-radius: 8px;">
@@ -60,8 +60,6 @@
         }
     </script>
     </div>
-
-
     <div class="user-routines">
       <h3>Todas tus rutinas</h3>
       <div class="routine-item">Rutina 1: Lunes - Piernas</div>
@@ -70,7 +68,6 @@
 
     </div>
   </div>
-
   <script>
     const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const hoy = new Date();

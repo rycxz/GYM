@@ -1,17 +1,21 @@
 fecha "to go" en rojo pa 
 
-modificar el home para que pona comenzar entrenamiento, hacer un termporizador que se inicie al darle al inciar entreo y que para al finalizar entreo
-
- 
-
-en la vista de entrenamiento que te deje modificar un ejercicio y en ensa sopcion tiene que salir lo del peso movido y rir
-
 boton de modificar rutina con todos lso campos modificables
 
 añadir reposive 
 
 mirar como desplegarla con google cloud 
 
-hay que hacer que solo una rutina se pueda mostrar
+hacer que la rutina.id se guarde a la hora de crear los ejercicos 
 
--
+de la vista de entremaiento hay que terminar el controlador de guardar dia 
+y el de añadir ejercicio
+
+boton de moficar rutina--> hay que borrarlo ya que no tiene sentido 
+
+hacer seccion de "proximos entrenos" en la pgiana de home
+
+boton de eliminar rutinas enteras 
+
+
+cambair algun css

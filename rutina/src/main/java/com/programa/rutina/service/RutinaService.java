@@ -19,7 +19,7 @@ public class RutinaService {
     private RutinaRepository rutinaRepository;
 
     public RutinaModel findByUsuario(UsuarioModel usuario) {
-        return rutinaRepository.findByUsuario(usuario).orElse(null);
+        return rutinaRepository.findRutinaActivaPorUsuario(usuario).orElse(null);
     }
 
     public List<RutinaModel> findAllByUsuarioId(Long usuarioId) {

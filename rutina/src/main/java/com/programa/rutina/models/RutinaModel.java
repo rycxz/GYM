@@ -7,7 +7,6 @@ package com.programa.rutina.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -52,6 +51,15 @@ public class RutinaModel {
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioModel usuario;
+    @Override
+public String toString() {
+    return "RutinaModel{" +
+            "id=" + id +
+            ", nombre=" + nombre +
+
+            '}';
+}
+
 
 
 

@@ -1,5 +1,8 @@
 package com.programa.rutina.service;
 
+import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +46,25 @@ public class DiaService {
         default -> throw new IllegalArgumentException("Día no válido: " + englishDay);
     };
 }
+ public String calcularDiferenciaHoras(String horaInicio, String horaFin) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+
+        try {
+            LocalTime inicio = LocalTime.parse(horaInicio, formatter);
+            LocalTime fin = LocalTime.parse(horaFin, formatter);
+            // si la hora de fin es antes que la de inicio, se asume que es al dia siguiente
+            if (fin.isBefore(inicio)) {
+                fin = fin.plusHours(24);
+            }
+
+            Duration duracion = Duration.between(inicio, fin);
+            long horas = duracion.toHours();
+            long minutos = duracion.toMinutes() % 60;
+
+            return horas + " horas " + minutos + " minutos";
+        } catch (Exception e) {
+            return "Error al calcular diferencia: " + e.getMessage();
+        }
+    }
 
 }
