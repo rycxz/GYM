@@ -23,20 +23,24 @@
     <ul>
       <li th:each="ejercicio : ${rutinaHoy.ejercicios}">
         <strong th:text="${ejercicio.nombreEjercicio}"></strong> -
-        <span th:text="'Series: ' + ${ejercicio.series} + ', Reps: ' + ${ejercicio.repeticiones} + ', Peso: ' + ${ejercicio.pesoUsado} + 'kg'"></span>
+        <span th:text="'Series: ' + ${ejercicio.series} + ', Reps: ' + ${ejercicio.repeticiones} + ', Peso: ' + ${ejercicio.pesoUsado} + ' kg'"></span>
       </li>
     </ul>
+    <div style="margin-top: 20px;"
+         th:if="${rutinaHoy.ejercicios != null and #lists.size(rutinaHoy.ejercicios) > 0}">
+      <button onclick="window.location.href='/inciar-rutina'" style="padding: 12px 24px; font-size: 16px; border-radius: 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
+        Iniciar entrenamiento
+      </button>
+    </div>
+    <div style="margin-top: 20px;"
+         th:if="${rutinaHoy.ejercicios == null or #lists.isEmpty(rutinaHoy.ejercicios)}">
+      <p>¡Todo listo por hoy!</p>
+    </div>
   </div>
-
+</div>
   <div th:if="${rutinaHoy == null}">
     <p>No tenés una rutina asignada para hoy.</p>
   </div>
-  <div style="margin-top: 20px;"></div>
-    <button onclick="window.location.href='/inciar-rutina'" style="padding: 12px 24px; font-size: 16px; border-radius: 8px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">
-      Iniciar entrenamiento
-    </button>
-  </div>
-</div>
     <div class="actions">
       <button onclick="window.location.href='/crear-rutina'">Crear rutina</button>
     <select id="selectRoutine" style="padding: 10px; font-size: 16px; border-radius: 8px;">

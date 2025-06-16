@@ -51,6 +51,7 @@
 
                 <div class="ejercicios-container" id="ejercicios-${index}"></div>
                 <button type="button" onclick="agregarEjercicio(${index})">Agregar ejercicio</button>
+
             `;
             contenedorSemana.appendChild(seccionDia);
         });
@@ -73,12 +74,14 @@
                 <label>*Repeticiones:</label>
                 <input type="text" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].repeticiones" min="1" required>
 
-                <label>*Pesos:</label>
-                <input type="text" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].pesos" min="1" required>
+                <label>*Pesos Esperados:</label>
+                <input type="text" name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].pesoEsperado" min="1" required>
 
                 <label>Comentario:</label>
                 <textarea name="dias[${diaIndex}].ejercicios[${ejercicioIndex}].comentario" rows="2" placeholder="Opcional..."></textarea>
-            `;
+           <button type="button" onclick="this.parentElement.remove()">Eliminar ejercicio</button>
+        <hr>
+                `;
             container.appendChild(div);
         }
     </script>

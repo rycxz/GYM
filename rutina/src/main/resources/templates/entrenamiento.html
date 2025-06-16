@@ -9,36 +9,32 @@
 <h2>Entrenamiento del día</h2>
 <p>Hora de inicio: <strong th:text="${horaActual}"></strong></p>
 
-<form id="form-entrenamiento" method="post" th:action="@{/guardar-dia}">
-    <div th:if="${rutinaHoy != null}">
-        <div th:each="ejercicio, stat : ${rutinaHoy.ejercicios}">
-            <h4>Ejercicio <span th:text="${stat.index + 1}"></span></h4>
-          <input type="hidden" th:name="'ejercicios[' + ${stat.index} + '].id'" th:value="${ejercicio.id}" />
+<form method="post" th:action="@{/guardar-dia}">
+    <input type="hidden" name="diaId" th:value="${rutinaHoy.id}" />
+    <input type="hidden" name="horaIncio" th:value="${horaActual}" />
 
+    <div th:each="ejercicio, stat : ${rutinaHoy.ejercicios}">
+        <input type="hidden" th:name="'ejercicios[' + ${stat.index} + '].id'" th:value="${ejercicio.id}" />
 
         <label>Nombre:</label>
         <input type="text" th:name="'ejercicios[' + ${stat.index} + '].nombreEjercicio'" th:value="${ejercicio.nombreEjercicio}" />
         <label>Series:</label>
         <input type="number" th:name="'ejercicios[' + ${stat.index} + '].series'" th:value="${ejercicio.series}" />
         <label>Repeticiones:</label>
-        <input type="number" th:name="'ejercicios[' + ${stat.index} + '].repeticiones'" th:value="${ejercicio.repeticiones}" />
+        <input type="text" th:name="'ejercicios[' + ${stat.index} + '].repeticiones'" th:value="${ejercicio.repeticiones}" />
         <label>Peso Usado:</label>
-        <input type="number" th:name="'ejercicios[' + ${stat.index} + '].pesoUsado'" />
-        <label>Repeticiones Recamara:</label>
-        <input type="number" th:name="'ejercicios[' + ${stat.index} + '].repeticionesRecamara'" />
+        <input type="text" th:name="'ejercicios[' + ${stat.index} + '].pesoUsado'" th:value="${ejercicio.pesoUsado}" />
+        <label>Repeticiones Recámara:</label>
+        <input type="number" th:name="'ejercicios[' + ${stat.index} + '].repeticionesRecamara'" th:value="${ejercicio.repeticionesRecamara}" />
+        <input type="hidden" th:name="'ejercicios[' + ${stat.index} + '].pesoEsperado'" th:value="${ejercicio.pesoEsperado}" />
         <label>Comentario:</label>
-        <textarea th:name="'ejercicios[' + ${stat.index} + '].comentario'"></textarea>
-            <input type="hidden" th:name="horaIncio" th:value="${horaActual}" />
-
-            <hr/>
-        </div>
-    </div>
-    <div th:if="${rutinaHoy == null}">
-        <p>No tienes rutina asignada para hoy.</p>
+        <textarea th:name="'ejercicios[' + ${stat.index} + '].comentario'" th:text="${ejercicio.comentario}"></textarea>
+        <hr/>
     </div>
 
     <button type="submit">Guardar entrenamiento</button>
 </form>
+
 
 <!-- Formulario para agregar un nuevo ejercicio -->
 <h3>Agregar nuevo ejercicio</h3>

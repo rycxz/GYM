@@ -8,6 +8,7 @@ package com.programa.rutina.controllers;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.programa.rutina.models.DiaModel;
@@ -128,6 +130,7 @@ public class HomeController {
                 if (dia.getEjercicios() != null) {
                     for (EjercicioRealizadoModel ejercicio : dia.getEjercicios()) {
                         ejercicio.setDia(dia);
+                        ejercicio.setRutina(rutina);
                         ejercicioRepository.save(ejercicio);
                     }
                 }
@@ -141,7 +144,7 @@ public class HomeController {
         return "redirect:/home";
     }
     @GetMapping("/inciar-rutina")
-    public String iniciarRutina(HttpSession session, Model model) {
+    public String iniciarRutina(HttpSession session, Model model  ) {
         // Recuperar el usuario de la sesión
         Object usuario = session.getAttribute("usuario");
         if (usuario == null) {
@@ -162,6 +165,7 @@ public class HomeController {
                 String horaActual = fechaActual.getHour() + ":" + fechaActual.getMinute();
                 model.addAttribute("horaActual", horaActual);
                  model.addAttribute("rutinaHoy", diaDeHoy);
+                 model.addAttribute("diaId", diaDeHoy.getId());
             } else {
                 model.addAttribute("rutinaHoy", null);
             }
@@ -170,24 +174,43 @@ public class HomeController {
 
         return "entrenamiento";
     }
-    @PostMapping("/guardar-dia")
-    public String guardarDia(@ModelAttribute DiaModel dia,@ModelAttribute String horaIncio, RedirectAttributes redirectAttributes,HttpSession session, Model model) {
-        Object usuario = session.getAttribute("usuario");
-        if (usuario == null) {
-            return "redirect:/auth/login";
-        }
-        model.addAttribute("usuario", usuario);
-           LocalTime fechaActual = LocalTime.now();
-                String horaActual = fechaActual.getHour() + ":" + fechaActual.getMinute();
-                String horaComienzo = horaIncio;
-                String diferencia = diaServicio.calcularDiferenciaHoras(horaComienzo, horaActual);
-                dia.setDuracion(diferencia);
-                dia.getEjercicios().forEach(ejercicio -> {
-                    ejercicio.setDia(dia);
-                });
-
-        return "redirect:/home";
+ @PostMapping("/guardar-dia")
+public String guardarDia(@RequestParam("diaId") Long diaId,
+                         @RequestParam("horaIncio") String horaIncio,
+                         RedirectAttributes redirectAttributes,
+                         HttpSession session,
+                         Model model,
+                            @ModelAttribute("ejercicios") List<EjercicioRealizadoModel> ejercicios) {
+    Object usuario = session.getAttribute("usuario");
+    if (usuario == null) {
+        return "redirect:/auth/login";
     }
+
+    model.addAttribute("usuario", usuario);
+
+    LocalTime fechaActual = LocalTime.now();
+    String horaActual = fechaActual.getHour() + ":" + fechaActual.getMinute();
+    String horaComienzo = horaIncio;
+    String diferencia = diaServicio.calcularDiferenciaHoras(horaComienzo, horaActual);
+
+    RutinaModel rutina = rutinaRepository.findRutinaActivaPorUsuario((UsuarioModel) usuario).orElse(null);
+      DiaModel dia = diaRepository.findById(diaId).orElse(null);
+
+    if (dia == null) {
+                return "redirect:/home";
+    }
+    dia.setDuracion(diferencia);
+        diaRepository.save(dia);
+        for (EjercicioRealizadoModel ejercicio : ejercicios) {
+                ejercicio.setDia(dia);
+                ejercicio.setRutina(rutina);
+                ejercicioRepository.save(ejercicio);
+            }
+
+
+    return "redirect:/home";
+}
+
     @PostMapping("/agregar-ejercicio")
     public String agregarEjercicio(@ModelAttribute EjercicioRealizadoModel ejercicio, RedirectAttributes redirectAttributes) {
         // Aquí puedes implementar la lógica para agregar el ejercicio

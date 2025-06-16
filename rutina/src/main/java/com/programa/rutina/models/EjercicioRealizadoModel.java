@@ -38,9 +38,12 @@ public class EjercicioRealizadoModel {
     private String repeticiones;
         @Column(nullable = true)
     private String pesoUsado;
-
+    @Column(nullable = true)
+    private String pesoEsperado;
     private int repeticionesRecamara;
     private String comentario;
+
+
 
     @ManyToOne
     @JoinColumn(name = "dia_id")
